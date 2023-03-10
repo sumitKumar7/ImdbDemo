@@ -14,7 +14,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = HomeViewController(nibName: nil, bundle: nil)
+        let navigationController = UINavigationController(rootViewController:
+                                                            LoginViewController(nibName: nil, bundle: nil))
+        window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
     }
 

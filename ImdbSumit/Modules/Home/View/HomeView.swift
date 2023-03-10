@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol HomeViewDelegate: AnyObject {
+    func homeView(_ view: HomeView, didSelectMovie movie: MovieDataModel)
+}
+
 class HomeView: UIView {
+    
+    // MARK: -  UIComponents
     
     private var movieTableView: UITableView = {
         let tableView = UITableView()
@@ -16,6 +22,11 @@ class HomeView: UIView {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
+    
+    // MARK: - Properties
+    
+    weak var delegate: HomeViewDelegate?
+    private var movies = [MovieDataModel]()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -47,6 +58,11 @@ class HomeView: UIView {
             movieTableView.trailingAnchor.constraint(equalTo: trailingAnchor),
         ])
     }
+    
+    func updateView(with movies: Movies) {
+        self.movies = movies
+        movieTableView.reloadData()
+    }
 }
 
 extension HomeView: UITableViewDelegate, UITableViewDataSource {
@@ -56,7 +72,7 @@ extension HomeView: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return movies.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -64,7 +80,14 @@ extension HomeView: UITableViewDelegate, UITableViewDataSource {
             assertionFailure("Unable to load HomeTableViewCell in file: \(#file)")
             return UITableViewCell()
         }
+        DispatchQueue.main.async { [weak self] in
+            cell.configureCell(with: (self?.movies[indexPath.row])!)
+        }
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        delegate?.homeView(self, didSelectMovie: movies[indexPath.row])
     }
     
 }

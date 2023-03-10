@@ -29,9 +29,12 @@ class HomeTableViewCell: UITableViewCell {
         return imageView
     }()
     
-    private let thumbnailImageSize = CGSize(width: 200, height: 200)
-    // MARK: - Initializers
+    // MARK: - Properties
 
+    private let thumbnailImageSize = CGSize(width: 200, height: 200)
+    
+    // MARK: - Initializers
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setup()
@@ -56,14 +59,13 @@ class HomeTableViewCell: UITableViewCell {
         titleLabel.font = .systemFont(ofSize: 16, weight: .semibold)
         
         contentView.addSubview(subtitleLabel)
-        subtitleLabel.numberOfLines = 0
+        subtitleLabel.numberOfLines = 8
         subtitleLabel.font = .systemFont(ofSize: 14, weight: .regular)
     }
     
     private func setupThumbnailImageView() {
         contentView.addSubview(thumbnailImageView)
         thumbnailImageView.contentMode = .scaleAspectFit
-        thumbnailImageView.backgroundColor = .green
         thumbnailImageView.layer.cornerRadius = 5.0
     }
     
@@ -93,4 +95,13 @@ class HomeTableViewCell: UITableViewCell {
         ])
     }
     
+    func configureCell(with data: MovieDataModel) {
+        titleLabel.text = data.title
+        subtitleLabel.text = data.description
+        if let imageString = data.image {
+            ImageDownloader.shared.downloadImage(with: imageString, completionHandler: { [weak self] image, isCached in
+                self?.thumbnailImageView.image = image
+            }, placeholderImage: UIImage())
+        }
+    }
 }
