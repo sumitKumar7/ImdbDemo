@@ -1,7 +1,7 @@
 # ImdbDemo
-# I've used Clean Architecture in this demo app.
-# Used Singleton pattern in some of the cases.
-# I've added Image Caching and resuable Network Layer, ImageDownlaoder.
+## I've used Clean Architecture in this demo app.
+## Used Singleton pattern in some of the cases.
+## I've added Image Caching and resuable Network Layer, ImageDownlaoder.
 This app contains following:
 1. Firebase Authentication (Signup/Login)
 2. IMDB 100 movie list
